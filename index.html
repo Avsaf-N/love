@@ -24,6 +24,7 @@ body{
   align-items:center;
   color:white;
   overflow:hidden;
+  padding:20px;
 }
 
 .hidden{ display:none; }
@@ -31,51 +32,56 @@ body{
 .card{
   backdrop-filter: blur(20px);
   background: rgba(255,255,255,0.08);
-  padding:40px;
+  padding:25px 20px 30px 20px;
   border-radius:20px;
-  width:90%;
-  max-width:700px;
+  width:100%;
+  max-width:500px;
   text-align:center;
   box-shadow:0 0 40px rgba(0,0,0,0.5);
-  animation: fadeIn 1s ease forwards;
+  animation: fadeIn 0.8s ease forwards;
   position:relative;
+  max-height:90vh;
+  display:flex;
+  flex-direction:column;
 }
 
 h1{
-  font-size:28px;
-  margin-bottom:20px;
+  font-size:24px;
+  margin-bottom:15px;
 }
 
 .slide-text{
-  font-size:18px;
-  line-height:1.9;
+  font-size:16px;
+  line-height:1.8;
   white-space:pre-line;
-  min-height:260px;
+  overflow-y:auto;
+  flex:1;
+  padding-right:4px;
 }
 
 button{
-  padding:12px 28px;
-  margin:15px 8px 0 8px;
+  padding:12px 24px;
+  margin:15px 6px 0 6px;
   border:none;
   border-radius:30px;
   cursor:pointer;
   background:#ff4d6d;
   color:white;
   font-weight:bold;
-  font-size:16px;
+  font-size:15px;
   transition:0.3s;
 }
 
 button:hover{ transform:scale(1.05); }
 
 .progress{
-  margin-top:20px;
+  margin-top:10px;
 }
 
 .dot{
-  height:10px;
-  width:10px;
-  margin:0 4px;
+  height:8px;
+  width:8px;
+  margin:0 3px;
   background:#ffffff55;
   border-radius:50%;
   display:inline-block;
@@ -96,34 +102,45 @@ button:hover{ transform:scale(1.05); }
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  background:radial-gradient(circle,#ff4d6d55,#000000cc);
+  background:radial-gradient(circle,#ff4d6d55,#000000e6);
   text-align:center;
-  animation: pop 0.6s ease forwards;
+  z-index:10;
 }
 
 #celebration.show{
   display:flex;
+  animation: glowBg 1.5s ease infinite alternate;
+}
+
+@keyframes glowBg{
+  from{background:radial-gradient(circle,#ff4d6d55,#000000e6);}
+  to{background:radial-gradient(circle,#ff99c855,#000000f2);}
 }
 
 #celebration h2{
-  font-size:36px;
-  margin-top:20px;
+  font-size:28px;
+  padding:0 20px;
+  animation: popText 0.8s ease forwards;
 }
 
-@keyframes pop{
-  from{transform:scale(0.8); opacity:0;}
-  to{transform:scale(1); opacity:1;}
+@keyframes popText{
+  0%{transform:scale(0.7); opacity:0;}
+  100%{transform:scale(1); opacity:1;}
 }
 
-.confetti{
+.heartRain{
   position:fixed;
-  top:-10px;
-  font-size:24px;
-  animation:fall 3s linear forwards;
+  top:-20px;
+  font-size:22px;
+  animation:fall 5s linear forwards;
+  pointer-events:none;
 }
 
 @keyframes fall{
-  to{transform:translateY(110vh) rotate(720deg); opacity:0;}
+  to{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0;
+  }
 }
 </style>
 </head>
@@ -133,8 +150,8 @@ button:hover{ transform:scale(1.05); }
 <div class="card" id="loginCard">
   <h1>Private Access ❤️</h1>
   <p>Enter Secret Code</p><br>
-  <input type="password" id="passwordInput" placeholder="Secret Code" style="padding:12px;border-radius:8px;border:none;text-align:center;">
-  <br>
+  <input type="password" id="passwordInput" placeholder="Secret Code"
+         style="padding:12px;border-radius:8px;border:none;text-align:center;width:100%;">
   <button onclick="checkPassword()">Enter</button>
 </div>
 
@@ -255,7 +272,7 @@ function yesClicked(){
   document.getElementById("sliderCard").classList.add("hidden");
   const celeb = document.getElementById("celebration");
   celeb.classList.add("show");
-  burstHearts();
+  startHeartRain();
 }
 
 function moveNo(){
@@ -265,15 +282,16 @@ function moveNo(){
   btn.style.top = Math.random()*70 + "%";
 }
 
-function burstHearts(){
-  for(let i=0;i<40;i++){
-    const c = document.createElement("div");
-    c.className="confetti";
-    c.innerHTML = ["❤️","💖","💝","💕"][Math.floor(Math.random()*4)];
-    c.style.left = Math.random()*100 + "vw";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
+function startHeartRain(){
+  setInterval(()=>{
+    const heart = document.createElement("div");
+    heart.className="heartRain";
+    heart.innerHTML = ["❤️","💖","💕","💝"][Math.floor(Math.random()*4)];
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (18 + Math.random()*18) + "px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+  },250);
 }
 </script>
 

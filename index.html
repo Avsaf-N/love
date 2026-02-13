@@ -88,17 +88,21 @@ button:hover{ transform:scale(1.05); }
   to{opacity:1; transform:translateY(0);}
 }
 
-/* Celebration */
+/* Celebration Screen */
 #celebration{
+  display:none;
   position:fixed;
   inset:0;
-  display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
   background:radial-gradient(circle,#ff4d6d55,#000000cc);
   text-align:center;
   animation: pop 0.6s ease forwards;
+}
+
+#celebration.show{
+  display:flex;
 }
 
 #celebration h2{
@@ -145,7 +149,7 @@ button:hover{ transform:scale(1.05); }
   <div class="progress" id="progressDots"></div>
 </div>
 
-<div id="celebration" class="hidden">
+<div id="celebration">
   <h2>Yayyy ❤️ thank you 🥺😭🫶</h2>
 </div>
 
@@ -201,7 +205,8 @@ nahi man bharta hai 🥺🫶,`,
 let currentSlide = 0;
 
 function checkPassword(){
-  if(document.getElementById("passwordInput").value === correctPassword){
+  const input = document.getElementById("passwordInput").value;
+  if(input === correctPassword){
     document.getElementById("loginCard").classList.add("hidden");
     document.getElementById("sliderCard").classList.remove("hidden");
     showSlide();
@@ -233,6 +238,7 @@ function nextSlide(){
 
 function renderDots(){
   const dots = document.getElementById("progressDots");
+  dots.innerHTML = "";
   slides.forEach(()=> {
     const d = document.createElement("span");
     d.className="dot";
@@ -247,7 +253,8 @@ function updateDots(){
 
 function yesClicked(){
   document.getElementById("sliderCard").classList.add("hidden");
-  document.getElementById("celebration").classList.remove("hidden");
+  const celeb = document.getElementById("celebration");
+  celeb.classList.add("show");
   burstHearts();
 }
 
